@@ -224,6 +224,11 @@ target_sources(sentry PRIVATE "${PROJECT_SOURCE_DIR}/include/sentry.h")
 add_library(sentry::sentry ALIAS sentry)
 add_subdirectory(src)
 
+if(SENTRY_LIBRARY_TYPE STREQUAL "STATIC")
+	# Avoid exporting JSMN symbols into the static library
+	target_compile_definitions(sentry PRIVATE JSMN_STATIC)
+endif()
+
 if (NOT SENTRY_SDK_NAME STREQUAL "")
 	target_compile_definitions(sentry PRIVATE SENTRY_SDK_NAME="${SENTRY_SDK_NAME}")
 endif()
